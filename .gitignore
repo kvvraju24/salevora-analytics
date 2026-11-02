@@ -1,0 +1,17 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Secrets: the database password lives in .env (see .env.example)
+.env
+
+# Raw Kaggle data: large, and not ours to share (see data/README.md)
+data/raw/*
+!data/raw/.gitkeep
+
+# macOS
+.DS_Store

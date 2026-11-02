@@ -1,0 +1,23 @@
+"""One place to open a connection to the project's MySQL database."""
+from sqlalchemy import URL, create_engine
+from sqlalchemy.engine import Engine
+
+from salevora import config
+
+
+def has_db_settings() -> bool:
+    """True when .env (or the environment) provides a database password."""
+    return bool(config.DB_PASSWORD)
+
+
+def get_engine() -> Engine:
+    """Return a SQLAlchemy engine for MySQL, built from the .env settings."""
+    url = URL.create(
+        "mysql+pymysql",
+        username=config.DB_USER,
+        password=config.DB_PASSWORD,
+        host=config.DB_HOST,
+        port=config.DB_PORT,
+        database=config.DB_NAME,
+    )
+    return create_engine(url)

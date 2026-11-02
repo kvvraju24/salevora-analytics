@@ -1,0 +1,12 @@
+# Phase 0–1: data handling, database access, tests.
+# Later phases add their own packages here (Plotly, scikit-learn, XGBoost, ...).
+pandas==3.1.0
+numpy==2.4.6
+SQLAlchemy==2.1.6
+PyMySQL==1.2.3
+cryptography==50.0.2  # PyMySQL needs it to log in with MySQL 8's default method
+python-dotenv==1.2.4
+pytest==9.2.0
+
+# Installs this project's own code (src/salevora) so `import salevora` works.
+-e .
