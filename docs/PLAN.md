@@ -66,7 +66,7 @@ We forecast the 48 days right after the history ends (Aug–Sep 2015). This is h
 salevora-analytics/
 ├── data/raw/              Kaggle CSVs (not committed)
 ├── sql/
-│   ├── schema.sql         stores, sales_history, forecast_schedule, forecasts, model_metrics
+│   ├── schema.sql         stores, sales_history, forecast_schedule (+ forecasts, model_metrics in Phase 4)
 │   └── queries/           business questions
 ├── notebooks/             01_explore.ipynb, 02_models.ipynb
 ├── src/salevora/

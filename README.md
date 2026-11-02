@@ -9,7 +9,7 @@ Sales analysis and forecasting for 1,115 Rossmann drugstores, built step by step
 | Phase | What | Status |
 |---|---|---|
 | 0 | Project setup: repo, Python environment, MySQL | ✅ Done |
-| 1 | Load the data into MySQL; answer business questions in SQL | Next |
+| 1 | Load the data into MySQL; answer business questions in SQL | 🔄 Data loaded; SQL questions next |
 | 2 | Exploration notebook | |
 | 3 | Tableau Public dashboard | |
 | 4 | Forecasting models and tests | |
@@ -37,7 +37,11 @@ Requires Python 3.11+ and MySQL 8.4.
    GRANT ALL PRIVILEGES ON salevora.* TO 'salevora'@'localhost';
    ```
 4. Copy `.env.example` to `.env` and put that password in it.
-5. Check that everything works:
+5. Load the CSVs into MySQL (about a minute; safe to run again):
+   ```bash
+   python -m salevora.load_data
+   ```
+6. Check that everything works:
    ```bash
    pytest
    ```
@@ -50,11 +54,14 @@ salevora-analytics/
 │   ├── README.md        how to get the Kaggle data
 │   └── raw/             train.csv, test.csv, store.csv (not committed)
 ├── docs/PLAN.md         the full plan and project rules
+├── sql/schema.sql       MySQL tables: stores, sales_history, forecast_schedule
 ├── src/salevora/        the project's Python code
 │   ├── config.py        paths and database settings
-│   └── db.py            connects to MySQL
+│   ├── db.py            connects to MySQL
+│   └── load_data.py     loads the CSVs into MySQL
 ├── tests/
-│   └── test_setup.py    checks the data and the database connection
+│   ├── test_setup.py    checks the data and the database connection
+│   └── test_load_data.py  checks the MySQL tables match the CSVs
 ├── .env.example         template for the database settings
 ├── pyproject.toml       makes src/salevora importable; pytest settings
 └── requirements.txt     pinned Python packages
