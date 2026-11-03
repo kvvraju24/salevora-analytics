@@ -9,8 +9,8 @@ Sales analysis and forecasting for 1,115 Rossmann drugstores, built step by step
 | Phase | What | Status |
 |---|---|---|
 | 0 | Project setup: repo, Python environment, MySQL | ✅ Done |
-| 1 | Load the data into MySQL; answer business questions in SQL | 🔄 Data loaded; SQL questions next |
-| 2 | Exploration notebook | |
+| 1 | Load the data into MySQL; answer business questions in SQL | ✅ Done: [findings](docs/findings.md) |
+| 2 | Exploration notebook | Next |
 | 3 | Tableau Public dashboard | |
 | 4 | Forecasting models and tests | |
 | 5 | SHAP explanations | |
@@ -18,6 +18,16 @@ Sales analysis and forecasting for 1,115 Rossmann drugstores, built step by step
 | 7 | FastAPI, Docker, hosting | |
 
 The full plan and the rules the project follows are in [docs/PLAN.md](docs/PLAN.md).
+
+## Key findings so far
+
+From 10 business questions answered in SQL ([all answers](docs/findings.md)):
+
+- Like for like, sales per open day grew **3.2% a year** (Jan–Jun 2013 → 2014 → 2015).
+- Promotions run **Monday–Friday in all stores at once, usually every other week**; promo days sell 22–57% more, most on Mondays.
+- **December** is the peak month (about +25% on November in 2013); almost every store closes on public holidays.
+- Stores with a competitor **within 500 m sell the most**, probably because both sit in busy centres (correlation, not cause).
+- **180 stores have no data for July–December 2014**, so totals for that period understate real sales.
 
 ## Set up on your machine
 
@@ -45,6 +55,10 @@ Requires Python 3.11+ and MySQL 8.4.
    ```bash
    pytest
    ```
+7. Run any business question:
+   ```bash
+   python -m salevora.run_query sql/queries/04_promo_by_weekday.sql
+   ```
 
 ## Project structure (so far)
 
@@ -53,15 +67,21 @@ salevora-analytics/
 ├── data/
 │   ├── README.md        how to get the Kaggle data
 │   └── raw/             train.csv, test.csv, store.csv (not committed)
-├── docs/PLAN.md         the full plan and project rules
-├── sql/schema.sql       MySQL tables: stores, sales_history, forecast_schedule
+├── docs/
+│   ├── PLAN.md          the full plan and project rules
+│   └── findings.md      answers to the 10 business questions
+├── sql/
+│   ├── schema.sql       MySQL tables: stores, sales_history, forecast_schedule
+│   └── queries/         the 10 business questions, one file each
 ├── src/salevora/        the project's Python code
 │   ├── config.py        paths and database settings
 │   ├── db.py            connects to MySQL
-│   └── load_data.py     loads the CSVs into MySQL
+│   ├── load_data.py     loads the CSVs into MySQL
+│   └── run_query.py     runs a .sql file and prints the result
 ├── tests/
 │   ├── test_setup.py    checks the data and the database connection
-│   └── test_load_data.py  checks the MySQL tables match the CSVs
+│   ├── test_load_data.py  checks the MySQL tables match the CSVs
+│   └── test_queries.py  checks every business question runs
 ├── .env.example         template for the database settings
 ├── pyproject.toml       makes src/salevora importable; pytest settings
 └── requirements.txt     pinned Python packages
