@@ -1,0 +1,63 @@
+# The whole project in containers: MySQL, a one-off setup job, the API and the app.
+#
+#   docker compose up --build
+#   app: http://localhost:8501   API docs: http://localhost:8000/docs
+#
+# Needs data/raw/*.csv (see data/README.md) and DB_PASSWORD in .env.
+# The setup job loads the data and trains the models (a few minutes), then exits.
+
+x-db-settings: &db-settings
+  DB_HOST: db
+  DB_PORT: "3306"
+  DB_NAME: salevora
+  DB_USER: salevora
+  DB_PASSWORD: ${DB_PASSWORD}
+
+services:
+  db:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: salevora
+      MYSQL_USER: salevora
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      retries: 30
+
+  setup:
+    build: .
+    image: salevora-analytics
+    command: sh -c "python -m salevora.load_data && python -m salevora.forecast"
+    environment: *db-settings
+    volumes:
+      - ./data/raw:/app/data/raw:ro
+    depends_on:
+      db:
+        condition: service_healthy
+
+  api:
+    image: salevora-analytics
+    command: uvicorn api.main:app --host 0.0.0.0 --port 8000
+    environment: *db-settings
+    ports:
+      - "8000:8000"
+    depends_on:
+      setup:
+        condition: service_completed_successfully
+
+  app:
+    image: salevora-analytics
+    command: streamlit run app/Home.py --server.address 0.0.0.0 --server.port 8501 --server.headless true
+    environment: *db-settings
+    ports:
+      - "8501:8501"
+    depends_on:
+      setup:
+        condition: service_completed_successfully
+
+volumes:
+  mysql-data:

@@ -1,0 +1,10 @@
+# Keep secrets, data and local environments out of the image.
+.env
+.venv/
+.git/
+data/
+dashboards/tableau/data/
+notebooks/
+**/__pycache__/
+.pytest_cache/
+*.egg-info/

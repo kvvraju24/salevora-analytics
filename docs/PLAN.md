@@ -94,3 +94,8 @@ salevora-analytics/
 - Tableau Public instead of Power BI, because Power BI Desktop doesn't run on macOS.
 - Streamlit reads MySQL directly at first; FastAPI comes in Phase 7.
 - Push to GitHub after Phase 1.
+- Tableau exports are summaries (store × month, chain × day) holding sums, so the public workbook doesn't republish the raw data.
+- Phase 4: models are scored on open days only (closed days are always 0). The best model is picked by WAPE (LightGBM in the first run).
+- Phase 5: SHAP values come from XGBoost's and LightGBM's built-in Tree SHAP, which is exact and needs no extra package.
+- Phase 6–7: Streamlit keeps reading MySQL directly. FastAPI serves the same queries (`queries.py`) to other programs, so both always agree.
+- Phase 7: CI runs the unit tests (made-up data). Tests that need MySQL or the Kaggle files skip on GitHub.
