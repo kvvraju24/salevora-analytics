@@ -8,10 +8,9 @@ It recreates the tables from sql/schema.sql first, so running it again
 gives the same result instead of duplicate rows.
 """
 import pandas as pd
-from sqlalchemy.engine import Engine
 
 from salevora.config import DATA_RAW, ROOT
-from salevora.db import get_engine
+from salevora.db import get_engine, run_sql_file
 
 SCHEMA = ROOT / "sql" / "schema.sql"
 
@@ -50,17 +49,9 @@ def read_csv(name: str, columns: dict, date_column: str | None = None) -> pd.Dat
     return df
 
 
-def recreate_tables(engine: Engine) -> None:
-    """Run sql/schema.sql: drop the tables if they exist, then create them."""
-    statements = [s.strip() for s in SCHEMA.read_text().split(";") if s.strip()]
-    with engine.begin() as conn:
-        for statement in statements:
-            conn.exec_driver_sql(statement)
-
-
 def main() -> None:
     engine = get_engine()
-    recreate_tables(engine)
+    run_sql_file(engine, SCHEMA)  # drop the tables if they exist, then create them
 
     stores = read_csv("store.csv", STORE_COLUMNS)
     history = read_csv("train.csv", HISTORY_COLUMNS, date_column="sale_date")

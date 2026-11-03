@@ -1,4 +1,6 @@
 """One place to open a connection to the project's MySQL database."""
+from pathlib import Path
+
 from sqlalchemy import URL, create_engine
 from sqlalchemy.engine import Engine
 
@@ -21,3 +23,11 @@ def get_engine() -> Engine:
         database=config.DB_NAME,
     )
     return create_engine(url)
+
+
+def run_sql_file(engine: Engine, path: Path) -> None:
+    """Run every statement in a .sql file (statements end with ';')."""
+    statements = [s.strip() for s in path.read_text().split(";") if s.strip()]
+    with engine.begin() as conn:
+        for statement in statements:
+            conn.exec_driver_sql(statement)

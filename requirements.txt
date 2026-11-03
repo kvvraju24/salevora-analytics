@@ -14,5 +14,16 @@ ipykernel==7.4.0     # lets Jupyter / VS Code run notebooks with this .venv
 nbformat==5.11.1     # needed by Plotly to show charts inside notebooks
 nbconvert==7.17.2    # runs a notebook from the command line
 
+# Phase 4-5: forecasting models and explanations.
+scikit-learn==1.9.1
+xgboost==3.2.0       # on macOS needs OpenMP: brew install libomp
+lightgbm==4.7.0
+
+# Phase 6-7: app and API.
+streamlit==1.66.1
+fastapi==0.162.0
+uvicorn==0.54.0      # runs the FastAPI app
+httpx==0.28.1        # used by FastAPI's test client
+
 # Installs this project's own code (src/salevora) so `import salevora` works.
 -e .
