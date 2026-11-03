@@ -10,8 +10,8 @@ Sales analysis and forecasting for 1,115 Rossmann drugstores, built step by step
 |---|---|---|
 | 0 | Project setup: repo, Python environment, MySQL | ✅ Done |
 | 1 | Load the data into MySQL; answer business questions in SQL | ✅ Done: [findings](docs/findings.md) |
-| 2 | Exploration notebook | Next |
-| 3 | Tableau Public dashboard | |
+| 2 | Exploration notebook | ✅ Done: [view with charts](https://nbviewer.org/github/kvvraju24/salevora-analytics/blob/main/notebooks/01_explore.ipynb) |
+| 3 | Tableau Public dashboard | Next |
 | 4 | Forecasting models and tests | |
 | 5 | SHAP explanations | |
 | 6 | Streamlit app | |
@@ -28,6 +28,9 @@ From 10 business questions answered in SQL ([all answers](docs/findings.md)):
 - **December** is the peak month (about +25% on November in 2013); almost every store closes on public holidays.
 - Stores with a competitor **within 500 m sell the most**, probably because both sit in busy centres (correlation, not cause).
 - **180 stores have no data for July–December 2014**, so totals for that period understate real sales.
+- Type b stores draw **many customers with small baskets**; daily sales are right-skewed, so the model will learn log sales.
+
+The [exploration notebook](https://nbviewer.org/github/kvvraju24/salevora-analytics/blob/main/notebooks/01_explore.ipynb) shows these patterns in 8 interactive charts (GitHub can't display Plotly charts, so the link opens nbviewer).
 
 ## Set up on your machine
 
@@ -70,6 +73,8 @@ salevora-analytics/
 ├── docs/
 │   ├── PLAN.md          the full plan and project rules
 │   └── findings.md      answers to the 10 business questions
+├── notebooks/
+│   └── 01_explore.ipynb exploration with pandas and Plotly (8 charts + findings)
 ├── sql/
 │   ├── schema.sql       MySQL tables: stores, sales_history, forecast_schedule
 │   └── queries/         the 10 business questions, one file each
@@ -81,7 +86,8 @@ salevora-analytics/
 ├── tests/
 │   ├── test_setup.py    checks the data and the database connection
 │   ├── test_load_data.py  checks the MySQL tables match the CSVs
-│   └── test_queries.py  checks every business question runs
+│   ├── test_queries.py  checks every business question runs
+│   └── test_notebook.py checks the notebook runs without errors
 ├── .env.example         template for the database settings
 ├── pyproject.toml       makes src/salevora importable; pytest settings
 └── requirements.txt     pinned Python packages

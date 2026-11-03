@@ -8,5 +8,11 @@ cryptography==50.0.2  # PyMySQL needs it to log in with MySQL 8's default method
 python-dotenv==1.2.4
 pytest==9.2.0
 
+# Phase 2: exploration notebook and charts.
+plotly==7.1.0
+ipykernel==7.4.0     # lets Jupyter / VS Code run notebooks with this .venv
+nbformat==5.11.1     # needed by Plotly to show charts inside notebooks
+nbconvert==7.17.2    # runs a notebook from the command line
+
 # Installs this project's own code (src/salevora) so `import salevora` works.
 -e .
