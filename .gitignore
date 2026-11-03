@@ -13,5 +13,8 @@ __pycache__/
 data/raw/*
 !data/raw/.gitkeep
 
+# Tableau exports: recreate with `python -m salevora.export_tableau`
+dashboards/tableau/data/
+
 # macOS
 .DS_Store

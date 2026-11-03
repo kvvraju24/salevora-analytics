@@ -11,7 +11,7 @@ Sales analysis and forecasting for 1,115 Rossmann drugstores, built step by step
 | 0 | Project setup: repo, Python environment, MySQL | ✅ Done |
 | 1 | Load the data into MySQL; answer business questions in SQL | ✅ Done: [findings](docs/findings.md) |
 | 2 | Exploration notebook | ✅ Done: [view with charts](https://nbviewer.org/github/kvvraju24/salevora-analytics/blob/main/notebooks/01_explore.ipynb) |
-| 3 | Tableau Public dashboard | Next |
+| 3 | Tableau Public dashboard | 🔄 Data ready, dashboard in progress ([guide](dashboards/tableau/GUIDE.md)) |
 | 4 | Forecasting models and tests | |
 | 5 | SHAP explanations | |
 | 6 | Streamlit app | |
@@ -70,6 +70,9 @@ salevora-analytics/
 ├── data/
 │   ├── README.md        how to get the Kaggle data
 │   └── raw/             train.csv, test.csv, store.csv (not committed)
+├── dashboards/tableau/
+│   ├── GUIDE.md         step-by-step guide to build and publish the dashboard
+│   └── data/            CSV exports for Tableau (not committed)
 ├── docs/
 │   ├── PLAN.md          the full plan and project rules
 │   └── findings.md      answers to the 10 business questions
@@ -77,17 +80,20 @@ salevora-analytics/
 │   └── 01_explore.ipynb exploration with pandas and Plotly (8 charts + findings)
 ├── sql/
 │   ├── schema.sql       MySQL tables: stores, sales_history, forecast_schedule
-│   └── queries/         the 10 business questions, one file each
+│   ├── queries/         the 10 business questions, one file each
+│   └── exports/         summary tables for Tableau
 ├── src/salevora/        the project's Python code
 │   ├── config.py        paths and database settings
 │   ├── db.py            connects to MySQL
 │   ├── load_data.py     loads the CSVs into MySQL
-│   └── run_query.py     runs a .sql file and prints the result
+│   ├── run_query.py     runs a .sql file and prints the result
+│   └── export_tableau.py  writes the Tableau CSVs
 ├── tests/
 │   ├── test_setup.py    checks the data and the database connection
 │   ├── test_load_data.py  checks the MySQL tables match the CSVs
 │   ├── test_queries.py  checks every business question runs
-│   └── test_notebook.py checks the notebook runs without errors
+│   ├── test_notebook.py checks the notebook runs without errors
+│   └── test_export_tableau.py  checks the Tableau exports add up
 ├── .env.example         template for the database settings
 ├── pyproject.toml       makes src/salevora importable; pytest settings
 └── requirements.txt     pinned Python packages
